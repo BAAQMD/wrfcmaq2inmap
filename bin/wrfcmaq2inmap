@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+# Preprocesses WRF/MCIP/CMAQ output for use in InMap
+# <beidler.james@epa.gov>
+
+from optparse import OptionParser, OptionGroup
+import netCDF4 as ncf
+import wrfcmaq2inmap
+from wrfcmaq2inmap.gridtools import GridDef
+from wrfcmaq2inmap.inmap import InMAP
+
+def main():
+    options, args = get_opts()
+    if len(args) != 5:
+        raise ValueError('./gen_wrfcmaq.py wrfout metcro3d cmaq_conc rundate outfile')
+    # Command line options
+    wrf = args[0]       # Path to WRF output file
+    mcip = args[1]      # Path to MCIP METCRO3D file
+    cmaq = args[2]      # Path to CMAQ output concentration file
+    rundate = args[3]   # Current date to process
+    inmap_out = args[4] # Output file name
+    in_grid = GridDef()
+    out_grid = GridDef()
+    print('Opening %s' %mcip, flush=True)
+    with InMAP(inmap_out, 'w') as out_ncf, ncf.Dataset(mcip) as mcip: 
+        # Set the output layer number to the MCIP
+        out_ncf.LAYERS = mcip.dimensions['LAY'].size
+        # Define the output grid based on the MCIP
+        out_grid.io_grid(mcip)
+        print('Opening %s' %wrf, flush=True)
+        with ncf.Dataset(wrf) as in_ncf:
+            out_ncf.set_dims(in_ncf, out_grid)
+            in_grid.wrf_grid(in_ncf)
+            bounds = GridBounds(in_grid, out_grid)
+            # Regrid the WRF input to the CMAQ grid and domain
+            out_ncf.regrid(in_ncf, bounds, rundate, options.layers)
+        # Insert the ALT variable from the MCIP DENS
+        out_ncf.append_alt(mcip.variables['DENS'])
+        print('Opening %s' %cmaq, flush=True)
+        with ncf.Dataset(cmaq) as cmaq:
+            # Append the CMAQ concentrations
+            if options.mech.strip() == '':
+                # Otherwise append the concentrations
+                out_ncf.append_cmaq(cmaq)
+            else:
+                # If the calculation flag is set, calculate the concentrations
+                out_ncf.append_calc_cmaq(cmaq, mcip.variables['DENS'][:], options.mech)
+
+def get_opts():
+    '''
+    Read in the command line options
+    '''
+    parser = OptionParser(usage = 'usage: %prog [options] wrfout metcro3d cmaq_conc rundate outfile')
+    parser.add_option('-l', '--layers', dest='layers', default='',
+      help='Path to the layers mapping file for converting between layering schemes')
+    parser.add_option('-m', '--mech', dest='mech', default='cb6',
+      help='Chemical mechanism to apply (cb6 or saprc). Leave blank if partioning fractions are precalculatd.')
+    return parser.parse_args()
+
+if __name__ == '__main__':
+	main()
