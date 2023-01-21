@@ -129,12 +129,8 @@ class NCF(ncf.Dataset):
         self._set_dims(in_ncf, out_grid, layers)
         bounds = GridBounds(in_grid, out_grid)
         print('wrf nc')
-        if in_ncf.dimensions['bottom_top'] == 50:
-            print("50")
-            layer_idx = self.layer_map(layers_fn)
-        else:
-            print("not50")
-            layer_idx = [x for x in range(layers)]
+        layer_idx = self.layer_map(layers_fn)
+
         # Loop through and subset each species variable
         for varname, dims in metvars.items():
             print(varname)
