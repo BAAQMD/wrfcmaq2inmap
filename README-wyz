@@ -1,0 +1,62 @@
+WRF-CMAQ Preprocessor for InMAP
+-------------------------------
+
+Overview:
+===========================
+These scripts prepare CMAQ concentration and WRF meteorology output to be read into the InMAP preprocessing system. 
+Conversions are made to align WRF and CMAQ data spatially along the x, y, and z axes. The MCIP METCRO3D files is used to calculate altitude.
+Data slicing is used to obtain and align data temporally.
+The resulting netCDF file is read into a modified version of the wrfchem InMAP preprocessing module.
+In the interest of leveraging existing libraries and modules this process involves two steps using two different languages.
+
+Requirements:
+===========================
+- The wrfcmaq2inmap script requires python 3.5+ with modules netCDF4 (1.2.9+), numpy (1.12+), and pandas (0.20.1+).
+- revised InMAP 1.9.0, can be downloaded from: https://github.com/yuzhou-wang/inmap
+- CMAQ, WRF, and MCIP METCRO3D daily output.
+
+
+1. Installation of wrfcmaq2inmap_2018
+===========================
+The wrfcmaq2inmap libraries must be installed before the scripts can be used. The installation script checks that the module requirements are met.
+To install into your user path run:
+python setup.py install --user
+Missing modules can be installed using pip. For example, if numpy is missing you can try "pip install numpy>=1.12 --user".
+
+2. Preprocessing of inputs:
+===========================
+- WRF output files in each chunk.
+
+- The CMAQ output including CCTM_CONC and METCRO3D should be unziped. Could use "gunzip" command to unzip files, e.g. 
+gunzip METCRO3D_20180101.nc.gz
+
+
+3. WRF and CMAQ Output Processing:
+===========================
+The processer, wrfcmaq2inmap, takes WRF meteorological outputs and CMAQ concentration outputs and combines them into a single netCDF file with the same dimensions.
+The daily processed netCDFs contain the variables needed to be passed to the InMAP preprocessor.
+
+Steps:
+1) update "work", "wrfpath", "mcippath", "cmaqpath"
+2) cd to the directory that contain "gen_wrfcmaq_2018_batch_1km.csh", and then run the script using csh:
+csh gen_wrfcmaq_2018_batch_1km.csh
+
+4. Install the revised inmap
+===========================
+Steps:
+1) git clone https://github.com/yuzhou-wang/inmap.git # Download the code.
+2) cd inmap # Move into the InMAP directory
+3) GO111MODULE=on go build ./cmd/inmap # Compile the InMAP executable.
+
+
+5. InMAP Preprocessing:
+===========================
+Steps: 
+1) cd to the path: path/to/wrfcmaq2inmap_2018/scripts/inmap/inmap
+2) update the path of "InMAPData" and "WRFOut" in "WRFCmaq_2018_1km_batch.toml"
+"WRFOut" path should be the same as the path of "outfile" in "gen_wrfcmaq_2018_batch_1km.csh"
+3) update the paths in "inmap_preproc_1km_batch.csh"
+4) run the inmap_preproc_1km_batch.csh script
+csh inmap_preproc_1km_batch.csh
+
+6. Done!
