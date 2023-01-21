@@ -1,0 +1,18 @@
+! coords --line:  name; type, P-alpha, P-beta, P-gamma, xcent, ycent
+'12CONUS1'
+2, 33.0D0, 45.D0,-97.D0,-97.D0, 40.D0
+' '  !  end coords.  grids:  name; xorig,yorig,xcell,ycell,ncols,nrows,nthik
+'12US2', ! 12km continential, slightly smaller than 12US1
+'12CONUS1', -2412000.0, -1620000.0, 12000.0, 12000.0, 396, 246, 1
+'WRF_12_CONUS', ! Fake WRF grid on same projection as 12US2
+'12CONUS1', -2628000.0, -1800000.0, 12000.0, 12000.0, 472, 312, 1
+'WRF_4_CA', 
+'12CONUS1', -384000.0, -300000.0, 4000.0, 4000.0, 189, 189, 1
+'CMAQ_4_CA', 
+'12CONUS1', -376000.0, -292000.0, 4000.0, 4000.0, 185, 185, 1
+'WRF_1_CA', 
+'12CONUS1', -288000.0, -36000.0, 1000.0, 1000.0, 252, 252, 1
+'CMAQ_1_CA', 
+'12CONUS1', -220000.0, -16000.0, 1000.0, 1000.0, 164, 224, 1
+'' '  !  end grids.'
+
