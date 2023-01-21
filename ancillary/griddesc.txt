@@ -1,6 +1,6 @@
 ! coords --line:  name; type, P-alpha, P-beta, P-gamma, xcent, ycent
 '12CONUS1'
-2, 33.0D0, 45.D0,-97.D0,-97.D0, 40.D0
+2, 30.0D0, 60.D0,-120.5D0,-120.5D0, 37.D0
 ' '  !  end coords.  grids:  name; xorig,yorig,xcell,ycell,ncols,nrows,nthik
 '12US2', ! 12km continential, slightly smaller than 12US1
 '12CONUS1', -2412000.0, -1620000.0, 12000.0, 12000.0, 396, 246, 1
