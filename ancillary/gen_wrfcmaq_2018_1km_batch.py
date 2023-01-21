@@ -207,40 +207,48 @@ class NCF(ncf.Dataset):
         layer_idx = self.layer_map(layers_fn)
         dims = ('Time','bottom_top','south_north','west_east')
         # MW
-        mw = {'PAR': 72.1, 'ETH': 28, 'ETHY': 26, 'MEOH': 32, 'ETOH': 46.1, 'OLE': 42.1, 'TOL': 92.1, 
-          'XYLMN': 106.2, 'FORM': 30, 'ALD2': 44, 'ETHA': 30.1, 'IOLE': 56.1, 'ALDX': 58.1, 'NAPH': 128.2, 
-          'PRPA': 44.1, 'KET': 72.1, 'ISOP': 68.1, 'TERP': 136, 'SESQ': 204, 'NH3': 17.031, 'NO': 30.01,
-          'NO2': 46, 'SO2': 64, 'SULF': 98, 'NO3': 62, 'N2O5': 108, 'HONO': 47, 'HNO3': 63, 'PNA': 79,
-          'CRON': 153, 'CLNO2': 81.5, 'PAN': 121, 'PANX': 121, 'OPAN': 161, 'NTR1': 119.1, 'NTR2': 135.1, 
-          'INTR': 147.1, 'OH': 17.1, 'HO2H': 34}
+        mw = {'SOAALK': 112.0, 'MXYL': 106.2, 'OXYL': 106.2, 'PXYL': 106.2, 'TMBENZ124': 120.2, 'ARO2MN': 118.7, 
+              'TOLUENE': 92.1, 'ARO1': 95.2, 'BENZENE': 78.1, 'NAPHTHAL': 118.7, 
+              'ISOPRENE': 68.1, 'APIN': 136.2, 'TERP': 136.2, 'SESQ': 204.4, 
+              'S': 32.0, 'N': 14.0, 'ASO4': 96.0, 'ANH4': 18.0, 'ANO3': 62.0}
         # Output variable definitions for gasses and aerosols
-        cmaq_vars = {'aVOC': {'type': 'gas', 'units': 'ug/m3', 'species': ['PAR','ETH','ETHY','MEOH',
-            'ETOH','OLE','TOL','XLYMN','FORM','ALD2','ETHA','IOLE','ALDX','NAPH','PRPA','KET']},
-          'bVOC': {'type': 'gas', 'units': 'ug/m3', 'species': ['ISOP','TERP','SESQ']},
-          'aSOA': {'type': 'aero', 'units': 'ug/m3', 'species': ['AXYL1J','AXYL2J','AXYL3J','ATOL1J',
-             'ATOL2J','ATOL3J','ABNZ1J','ABNZ2J','ABNZ3J','AALK1J','AALK2J','AOLGAJ','APAH1J','APAH2J','APAH3J']},
-          'bSOA': {'type': 'aero', 'units': 'ug/m3', 'species': ['AISO1J','AISO2J','AISO3J','ATRP1J',
-             'ATRP2J','ASQTJ','AOLGBJ']},
-          'TotalPM25': {'type': 'aero', 'units': 'ug/m3', 'species': ['ASO4I','ANO3I','ANH4I','ANAI',
-             'ACLI','AECI','AOTHRI','ASO4J','ANO3J','ANH4J','ANAJ','ACLJ','AECJ','AOTHRJ','AFEJ',
-             'ASIJ','ATIJ','ACAJ','AMGJ','AMNJ','AALJ','AKJ','ALVPO1I','ASVPO1I','ASVPO2I','ALVPO1J',
-             'ASVPO1J','ASVPO2J','ASVPO3J','AIVPO1J','ALVOO1I','ALVOO2I','ASVOO1I','ASVOO2I',
-             'AXYL1J','AXYL2J','AXYL3J','ATOL1J','ATOL2J','ATOL3J','ABNZ1J','ABNZ2J','ABNZ3J',
-             'AISO1J','AISO2J','AISO3J','ATRP1J','ATRP2J','ASQTJ','AALK1J','AALK2J','APAH1J',
-             'APAH2J','APAH3J','AORGCJ','AOLGBJ','AOLGAJ','ALVOO1J','ALVOO2J','ASVOO1J','ASVOO2J',
-             'ASVOO3J','APCSOJ']},
-          'gNH': {'type': 'gas', 'units': 'ug/m3', 'species': ['NH3',]},
-          'oh': {'type': 'gas', 'units': 'ug/m3', 'species': ['OH',]},
-# fake variable, change in the future
-          'h2o2': {'type': 'gas', 'units': 'ug/m3', 'species': ['HO2H',]},
-
-          'gNO': {'type': 'gas', 'units': 'ug/m3', 'species': ['NO','NO2']},
-          'gS': {'type': 'gas', 'units': 'ug/m3', 'species': ['SULF','SO2']},
-          'pNH': {'type': 'aero', 'units': 'ug/m3', 'species': ['ANH4I','ANH4J']},
-          'pNO': {'type': 'aero', 'units': 'ug/m3', 'species': ['ANO3I','ANO3J']},
-          'pS': {'type': 'aero', 'units': 'ug/m3', 'species': ['ASO4I','ASO4J']},
-          'gN': {'type': 'gas', 'units': 'ug/m3', 'species': ['NO3','N2O5','N2O5','HONO','HNO3','PNA',
-             'CRON','CLNO2','PAN','PANX','OPAN','NTR1','NTR2','INTR']}}
+        cmaq_vars = {'aVOC': {'type': 'gas', 'units': 'ug/m3', 'species': [
+                              'SOAALK','MXYL','OXYL','PXYL','TMBENZ124','ARO2MN',
+                              'TOLUENE','ARO1','BENZENE','NAPHTHAL']},
+                     'bVOC': {'type': 'gas', 'units': 'ug/m3', 'species': [
+                              'ISOPRENE','APIN','TERP','SESQ']},
+                     'aSOA': {'type': 'aero', 'units': 'ug/m3', 'species': [
+                              'AALK1J','AALK2J','AXYL1J','AXYL2J','AXYL3J',
+                              'ATOL1J','ATOL2J','ATOL3J','ABNZ1J','ABNZ2J','ABNZ3J',
+                              'APAH1J','APAH2J','APAH3J','AOLGAJ']},
+                     'bSOA': {'type': 'aero', 'units': 'ug/m3', 'species': [
+                              'AISO1J','AISO2J','AISO3J',
+                              'ATRP1J','ATRP2J','ASQTJ','AOLGBJ']},
+                     'TotalPM25': {'type': 'aero', 'units': 'ug/m3', 'species': [
+                              'ASO4I','ANO3I','ANH4I','AOTHRI','AECI',
+                              'ASO4J','ANO3J','ANH4J','AOTHRJ','AECJ',
+                              'APOCI','APNCOMI','APOCJ','APNCOMJ',
+                              'ALVPO1I','ASVPO1I','ASVPO2I',
+                              'ALVOO1I','ALVOO2I','ASVOO1I','ASVOO2I',
+                              'ALVPO1J','ASVPO1J','ASVPO2J','ASVPO3J','AIVPO1J',
+                              'ALVOO1J','ALVOO2J','ASVOO1J','ASVOO2J','ASVOO3J','APCSOJ',
+                              'AALK1J','AALK2J','AXYL1J','AXYL2J','AXYL3J',
+                              'ATOL1J','ATOL2J','ATOL3J','ABNZ1J','ABNZ2J','ABNZ3J',
+                              'APAH1J','APAH2J','APAH3J','AOLGAJ',
+                              'AISO1J','AISO2J','AISO3J','ATRP1J','ATRP2J','ASQTJ','AOLGBJ','AORGCJ',
+                              'AFEJ','ASIJ','ATIJ','ACAJ','AMGJ','AMNJ','AALJ','AKJ',
+                              'ANAI','ACLI','ANAJ','ACLJ']},
+                     'oh': {'type': 'Oxgas', 'units': 'ppmv', 'species': ['OH',]},
+                     'h2o2': {'type': 'Oxgas', 'units': 'ppmv', 'species': ['HO2H',]},
+                     'gS': {'type': 'Sgas', 'units': 'ug/m3', 'species': ['SULF','SO2']},
+                     'gNH': {'type': 'Ngas', 'units': 'ug/m3', 'species': ['NH3',]},
+                     'gNO': {'type': 'Ngas', 'units': 'ug/m3', 'species': ['NO','NO2','HONO']},
+                     'gN': {'type': 'Ngas', 'units': 'ug/m3', 'species': [
+                              'NO3','N2O5','N2O5','HNO3','HNO4','RNO3','NPHE',
+                              'PAN','PAN2','PBZN','MAPAN','CLNO','CLONO','CLNO2','CLONO2']},
+                     'pS': {'type': 'SO4aero', 'units': 'ug/m3', 'species': ['ASO4I','ASO4J']},
+                     'pNH': {'type': 'NH4aero', 'units': 'ug/m3', 'species': ['ANH4I','ANH4J']},
+                     'pNO': {'type': 'NO3aero', 'units': 'ug/m3', 'species': ['ANO3I','ANO3J']}}
         for varname, desc in cmaq_vars.items():
             print(varname)
 #            print(dims)
@@ -254,7 +262,17 @@ class NCF(ncf.Dataset):
             for spec in desc['species']:
                 if spec in cmaq.variables:
                     if desc['type'] == 'gas':
-                        mult = mw[spec] * 1000 * dens[:24,:] / 28.9647
+                        mult = mw[spec] * 1000 * dens[:24,:] / 28.9628
+                    elif desc['type'] == 'Sgas':
+                        mult = mw['S'] * 1000 * dens[:24,:] / 28.9628
+                    elif desc['type'] == 'Ngas':
+                        mult = mw['N'] * 1000 * dens[:24,:] / 28.9628
+                    elif desc['type'] == 'SO4aero':
+                        mult = mw['S'] / mw['ASO4']
+                    elif desc['type'] == 'NH4aero':
+                        mult = mw['N'] / mw['ANH4']
+                    elif desc['type'] == 'NO3aero':
+                        mult = mw['N'] / mw['ANO3']
                     else:
                         mult = 1
                     var = cmaq.variables[spec]
@@ -273,12 +291,16 @@ class NCF(ncf.Dataset):
             self.sync()
         # Calc NO/NO2 partition
         var_out = self.createVariable('NO_NO2partitioning', np.float32, dims)
-        var_out.description = 'NO/(NO+NO2)'
+        var_out.description = 'NO/(NO+NO2+HONO)'
         var_out.units = 'fraction'
         if len(cmaq.dimensions['LAY']) == 50:
-            var_out[:] = cmaq.variables['NO'][:24,layer_idx,:] / (cmaq.variables['NO'][:24,layer_idx,:] + cmaq.variables['NO2'][:24,layer_idx,:])
+            var_out[:] = cmaq.variables['NO'][:24,layer_idx,:] / ( cmaq.variables['NO'][:24,layer_idx,:] 
+                                                                 + cmaq.variables['NO2'][:24,layer_idx,:] 
+                                                                 + cmaq.variables['HONO'][:24,layer_idx,:] )
         else:
-            var_out[:] = cmaq.variables['NO'][:24,:] / (cmaq.variables['NO'][:24,:] + cmaq.variables['NO2'][:24,:])
+            var_out[:] = cmaq.variables['NO'][:24,:] / ( cmaq.variables['NO'][:24,:] 
+                                                       + cmaq.variables['NO2'][:24,:] 
+                                                       + cmaq.variables['HONO'][:24,:] )
         self.sync()
         # Calc partitions from previously calculated vars
         partitions = {'bOrgPartitioning': {'num': 'bSOA', 'den': ['bSOA','bVOC']},
